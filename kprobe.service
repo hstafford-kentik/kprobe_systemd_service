@@ -1,0 +1,16 @@
+[Unit]
+Description=Kentik kprobe Service
+After=network.target
+
+[Service]
+EnvironmentFile=-/etc/default/kentik.env
+Type=simple
+User=root
+WorkingDirectory=/var/lib/kprobe
+AmbientCapabilities=CAP_NET_RAW
+ExecStart=/usr/bin/kprobe --email ${KENTIK_API_EMAIL} --token ${KENTIK_API_TOKEN} --interface <YOUR_INTERFACE_NAME_IE_eth0>  --promisc --device-id <KPROBE_DEVICE_ID> --sample 1 --status-host 0.0.0.0 --status-port 9999 -v dns
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
